@@ -230,22 +230,10 @@ def process_command(command):
         return
 
     # Launch flow
-    if launch_mode and launch_phrase_detected(command):
-        presentation_auth_mode = True
-        launch_mode = False
-        window.set_mode("listening")
-        speak("verification code", force=True)
-        return
-
-    if presentation_auth_mode:
-        if verification_detected(command):
-            presentation_auth_mode = False
-            window.set_mode("active")
-            speak("access granted", force=True)
-            threading.Thread(target=open_presentation, daemon=True).start()
-        else:
-            presentation_auth_mode = False
-            speak("verification failed", force=True)
+    if launch_phrase_detected(command):
+        window.set_mode("active")
+        speak("access granted, opening deck", force=True)
+        threading.Thread(target=open_presentation, daemon=True).start()
         return
 
     # Presentation controls: NO speaking/repeating
